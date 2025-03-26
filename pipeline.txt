@@ -53,21 +53,21 @@ pipeline{
             steps{
                 script{
                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){   
-                       sh "docker build --build-arg TMDB_V3_API_KEY=<yourtmdbapikey> -t netflix ."
-                       sh "docker tag netflix nasi101/netflix:latest "
-                       sh "docker push nasi101/netflix:latest "
+                       sh "docker build --build-arg TMDB_V3_API_KEY=26ead68c5d995c99df3dac5eb2c9d919 -t netflix ."
+                       sh "docker tag netflix shindeabhi1/netflix:latest "
+                       sh "docker push shindeabhi1/netflix:latest "
                     }
                 }
             }
         }
         stage("TRIVY"){
             steps{
-                sh "trivy image nasi101/netflix:latest > trivyimage.txt" 
+                sh "trivy image shindeabhi1/netflix:latest > trivyimage.txt" 
             }
         }
         stage('Deploy to container'){
             steps{
-                sh 'docker run -d -p 8081:80 nasi101/netflix:latest'
+                sh 'docker run -d -p 8081:80 shindeabhi1/netflix:latest'
             }
         }
         stage('Deploy to kubernets'){
@@ -91,7 +91,7 @@ pipeline{
             body: "Project: ${env.JOB_NAME}<br/>" +
                 "Build Number: ${env.BUILD_NUMBER}<br/>" +
                 "URL: ${env.BUILD_URL}<br/>",
-            to: 'iambatmanthegoat@gmail.com',                                #change mail here
+            to: 'shindeabhi1242@gmail.com',                               
             attachmentsPattern: 'trivyfs.txt,trivyimage.txt'
         }
     }
